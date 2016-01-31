@@ -1,0 +1,1 @@
+#TODO: create class defining node property
