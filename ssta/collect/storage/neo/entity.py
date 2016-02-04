@@ -20,30 +20,46 @@ class Entity:
         props = self._model.build_props(obj)
         node = self._db.nodes.create(**props)
 
-        labels = [].extend(self.labels)
-        if custom_labels: labels.extend(custom_labels)
+        labels = []
+        labels.extend(self.labels)
+        if custom_labels:
+            labels.extend(custom_labels)
+
+        print(labels)
 
         node.labels.add(labels)
 
         return node
 
-
-    def update(self, obj, add_labels):
-
+    def upsert(self, obj, add_labels=None):
+        node = self.get_one(obj)
 
         if not node:
             return self.create(obj, custom_labels=add_labels)
         else:
+            node.properties = self._model.build_props(obj)
+            return node
 
+    def delete(self, condition=None, **props):
+        nodes = self.get(condition=condition, **props)
 
-    def delete(self):
+        count = 0
+        for node in nodes:
+            node.delete()
+            count += 1
 
+        return count
 
-    def exists(self, obj):
+    def get_one(self, obj):
         props = self._model.build_props(obj)
 
         obj_id = {}
         for key in self._model.ID:
             obj_id[key] = props[key]
 
-        return  self.main_label.get(**obj_id)
+        nodes = self.main_label.get(**obj_id)
+
+        if nodes:
+            return nodes.next()
+        else:
+            return None
