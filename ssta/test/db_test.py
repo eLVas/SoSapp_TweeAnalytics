@@ -1,13 +1,11 @@
 
-from ssta.collect.storage.neo import connector
-from ssta.collect.storage.neo import entity
-from ssta.collect.storage.model import user as user_model
+from ssta.collect.storage.neo.connector import Connector
 
 from ssta.test.objects import user
 
-connector = connector.Neo4JConnector('localhost', 7474, 'neo4j', 'electro')
+connector = Connector()
 
-user_entity = entity.Entity(connector, user_model)
+user_entity = connector.get_dao('user')
 user = user.User(900, 'eLVas', 'Ivan')
 print('User: ', user)
 print('creating user')
