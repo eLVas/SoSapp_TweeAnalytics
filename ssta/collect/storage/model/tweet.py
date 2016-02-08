@@ -1,8 +1,9 @@
+from ssta.collect.storage.model import props
+
 LABEL = 'Tweet'
 ID = ['id']
+PROPS = ['id', 'text']
 
 
 def build_props(tweet):
-    props = {'id': tweet.id, 'text': tweet.text}
-
-    return props
+    return props.build_props(PROPS, tweet)

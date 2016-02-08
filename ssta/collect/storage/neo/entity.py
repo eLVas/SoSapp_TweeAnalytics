@@ -25,10 +25,7 @@ class Entity:
         if custom_labels:
             labels.extend(custom_labels)
 
-        print(labels)
-
         node.labels.add(labels)
-
         return node
 
     def upsert(self, obj, add_labels=None):
